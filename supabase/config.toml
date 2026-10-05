@@ -1,0 +1,2 @@
+[functions.booking-api]
+verify_jwt = false
