@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Gahire | Yönetim paneli</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="vendor/supabase-2.116.0.js" defer></script>
+    <script src="config.js" defer></script>
+    <script src="backend.js" defer></script>
+    <script src="admin.js" defer></script>
+    <script src="admin-members.js" defer></script>
+  </head>
+  <body class="admin-body">
+    <header>
+      <a href="index.html" class="brand">GAHİRE<span>YÖNETİM PANELİ</span></a
+      ><a href="index.html">Siteye dön ↗</a>
+    </header>
+    <main class="admin-main">
+      <section id="admin-login" class="login-box">
+        <p class="eyebrow">SALON YÖNETİMİ</p>
+        <h1>Hoş <em>geldiniz.</em></h1>
+        <p>Randevuları ve salon ayarlarını yönetmek için giriş yapın.</p>
+        <form id="login-form">
+          <label
+            >E-posta<input
+              id="admin-email"
+              type="email"
+              autocomplete="username"
+              required /></label
+          ><label
+            >Şifre<input
+              id="admin-password"
+              type="password"
+              autocomplete="current-password"
+              required
+              minlength="6" /></label
+          ><button id="login-submit" class="button dark" type="submit">
+            Giriş yap ↗
+          </button>
+        </form>
+        <p id="login-message" role="status"></p>
+        <a class="text-link" href="preview.html#admin"
+          >Yönetim paneli önizlemesi</a
+        >
+      </section>
+      <section id="admin-panel" hidden>
+        <div class="admin-heading">
+          <div>
+            <p class="eyebrow">GAHİRE / SALON YÖNETİMİ</p>
+            <h1>Bugüne <em>bir bakış.</em></h1>
+          </div>
+          <button class="small-button" id="logout">Çıkış yap</button>
+        </div>
+        <div class="admin-toolbar">
+          <button class="small-button" id="alarm-toggle" aria-pressed="false">
+            Sesli uyarıyı aç</button
+          ><label
+            >Ses
+            <input
+              id="alarm-volume"
+              type="range"
+              min="0"
+              max="100"
+              value="50" /></label
+          ><span id="alarm-status" role="status">Sesli uyarı kapalı.</span>
+        </div>
+        <div class="admin-stats">
+          <div>
+            <span>Onay bekleyen · tüm tarihler</span
+            ><strong id="pending-count">—</strong>
+          </div>
+          <div>
+            <span>Bugünkü aktif randevular</span
+            ><strong id="today-count">—</strong>
+          </div>
+          <div>
+            <span>Bağlantı</span
+            ><strong id="connection-state">Kontrol ediliyor</strong>
+          </div>
+        </div>
+        <div class="admin-tabs" aria-label="Panel bölümleri">
+          <button data-tab="appointments" class="selected">Randevular</button
+          ><button data-tab="members">Müşteriler & seanslar</button
+          ><button data-tab="settings">Hizmetler & çalışma saatleri</button>
+        </div>
+        <p id="admin-message" role="status" aria-live="polite"></p>
+        <div id="appointments-view">
+          <div class="agenda-navigation">
+            <div>
+              <p class="eyebrow">GÜNLÜK AJANDA</p>
+              <h2 id="agenda-title">Randevular</h2>
+            </div>
+            <div class="card-actions">
+              <button
+                class="small-button"
+                id="previous-day"
+                aria-label="Önceki gün"
+              >
+                Önceki gün</button
+              ><button class="small-button" id="today-shortcut">Bugün</button
+              ><button
+                class="small-button"
+                id="next-day"
+                aria-label="Sonraki gün"
+              >
+                Sonraki gün</button
+              ><button class="small-button" id="pending-shortcut">
+                Onay bekleyenler
+              </button>
+            </div>
+          </div>
+          <div class="filters">
+            <label>Tarih<input id="filter-date" type="date" /></label
+            ><label
+              >Durum<select id="filter-status">
+                <option value="">Tüm durumlar</option>
+                <option value="bekliyor">Onay bekliyor</option>
+                <option value="onaylandi">Onaylandı</option>
+                <option value="iptal">İptal edildi</option>
+                <option value="tamamlandi">Tamamlandı</option>
+                <option value="gelmedi">Gelmedi</option>
+              </select></label
+            ><label
+              >Müşteri ara<input
+                id="filter-search"
+                type="search"
+                maxlength="80"
+                placeholder="Ad veya telefon" /></label
+            ><button id="all-dates" class="small-button">Tüm tarihler</button
+            ><button id="refresh-list" class="small-button">Yenile</button>
+          </div>
+          <p id="last-refresh" class="muted" role="status"></p>
+          <p id="list-count" class="muted"></p>
+          <div id="appointments-list"></div>
+          <div class="pagination">
+            <button class="small-button" id="page-prev">← Önceki</button
+            ><span id="page-info"></span
+            ><button class="small-button" id="page-next">Sonraki →</button>
+          </div>
+        </div>
+        <div id="members-view" hidden>
+          <div class="portal-section-heading">
+            <h2>Müşteriler & seanslar</h2>
+            <button class="button dark" id="open-create-member">
+              Yeni müşteri
+            </button>
+          </div>
+          <div class="filters">
+            <label
+              >Müşteri ara<input
+                id="member-search"
+                type="search"
+                maxlength="80"
+                placeholder="Ad, kullanıcı adı veya telefon" /></label
+            ><label
+              >Hesap durumu<select id="member-status-filter">
+                <option value="">Tüm müşteriler</option>
+                <option value="active">Aktif hesaplar</option>
+                <option value="inactive">Kapalı hesaplar</option>
+                <option value="first">İlk giriş bekleniyor</option>
+              </select></label
+            ><button class="small-button" id="refresh-members">Yenile</button>
+          </div>
+          <p id="members-message" role="status"></p>
+          <div id="admin-member-list"></div>
+          <div class="pagination">
+            <button id="members-prev" class="small-button">Önceki</button
+            ><span id="members-page"></span
+            ><button id="members-next" class="small-button">Sonraki</button>
+          </div>
+          <section id="customer-detail" class="customer-detail" hidden>
+            <div class="portal-section-heading">
+              <div>
+                <p class="eyebrow">MÜŞTERİ DOSYASI</p>
+                <h2 id="customer-title"></h2>
+              </div>
+              <button id="close-customer" class="small-button">
+                Dosyayı kapat
+              </button>
+            </div>
+            <p id="customer-info"></p>
+            <div class="card-actions">
+              <button class="small-button" id="customer-reset">
+                Geçici şifre ver</button
+              ><button class="small-button" id="customer-active"></button>
+            </div>
+            <div id="customer-packages" class="member-package-grid"></div>
+            <details class="admin-form-details">
+              <summary>Bakım paketi tanımla</summary>
+              <form id="package-form" class="form-grid">
+                <label
+                  >Paket adı<input
+                    id="package-label"
+                    required
+                    minlength="2"
+                    maxlength="100"
+                    placeholder="Örn. 8 seans epilasyon" /></label
+                ><label
+                  >Hizmet<select id="package-service" required></select></label
+                ><label
+                  >Toplam seans<input
+                    id="package-total"
+                    type="number"
+                    min="1"
+                    max="100"
+                    value="8"
+                    required /></label
+                ><label
+                  >Önerilen sonraki tarih<input
+                    id="package-due"
+                    type="date" /></label
+                ><button class="button dark" type="submit">
+                  Paketi kaydet
+                </button>
+              </form>
+            </details>
+            <details class="admin-form-details" id="record-details">
+              <summary>Yapılan işlemi kaydet</summary>
+              <form id="session-form" class="form-grid">
+                <label
+                  >İlgili randevu<select id="session-appointment">
+                    <option value="">Randevusuz işlem</option>
+                  </select></label
+                ><label
+                  >Hizmet<select id="session-service" required></select></label
+                ><label
+                  >Paket<select id="session-package">
+                    <option value="">Paket dışında işlem</option>
+                  </select></label
+                ><label
+                  >İşlem tarihi ve saati (Türkiye)<input
+                    id="session-when"
+                    type="datetime-local"
+                    required /></label
+                ><label
+                  >Sonraki önerilen tarih<input
+                    id="session-due"
+                    type="date" /></label
+                ><label
+                  >Müşteriye görünen not<textarea
+                    id="session-note"
+                    rows="2"
+                    maxlength="500"
+                    placeholder="İşlemle ilgili kısa not. Sağlık bilgisi yazmayın."
+                  ></textarea></label
+                ><button class="button dark" type="submit">
+                  İşlemi tamamla ve kaydet
+                </button>
+              </form>
+            </details>
+            <h3>Son 20 işlem</h3>
+            <div id="customer-sessions"></div>
+          </section>
+        </div>
+        <div id="settings-view" hidden>
+          <section class="settings-box">
+            <h2>Randevu ayarları</h2>
+            <p class="muted">
+              Önce hizmet sürelerini ve çalışma saatlerini doğrulayın. Aynı anda
+              bir müşteriye randevu verilir.
+            </p>
+            <form id="settings-form" class="form-grid">
+              <label class="check-label"
+                ><input id="booking-enabled" type="checkbox" />Online randevu
+                alımı açık</label
+              ><label
+                >En erken kaç dakika sonrası?<input
+                  id="notice-minutes"
+                  type="number"
+                  min="0"
+                  max="1440"
+                  required /></label
+              ><label
+                >Kaç gün ilerisi açılacak?<input
+                  id="horizon-days"
+                  type="number"
+                  min="1"
+                  max="90"
+                  required /></label
+              ><button class="button dark" type="submit">
+                Ayarları kaydet
+              </button>
+            </form>
+          </section>
+          <section class="settings-box">
+            <h2>Hizmetler</h2>
+            <p class="muted">
+              Süreler başlangıç değerleridir; salondaki gerçek sürelerle
+              güncelleyin. Fiyatı boş bırakırsanız müşteriye “bilgi alınız”
+              gösterilir. Değişiklikler mevcut randevuları etkilemez.
+            </p>
+            <div id="services-editor"></div>
+          </section>
+          <section class="settings-box">
+            <h2>Haftalık çalışma saatleri</h2>
+            <p class="muted">
+              Saatler Türkiye saatidir. Değişiklikler önceden alınmış
+              randevuları iptal etmez.
+            </p>
+            <div id="hours-editor"></div>
+          </section>
+          <section class="settings-box">
+            <h2>Kapalı günler</h2>
+            <p class="muted">
+              Tatil veya özel günleri randevuya kapatın. Aktif randevusu olan
+              gün kapatılamaz.
+            </p>
+            <form id="closure-form" class="form-grid">
+              <label>Tarih<input type="date" id="closure-day" required /></label
+              ><label
+                >Açıklama<input
+                  id="closure-reason"
+                  maxlength="120"
+                  required
+                  placeholder="Salon kapalı" /></label
+              ><button class="button dark" type="submit">Günü kapat</button>
+            </form>
+            <div id="closures-list"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <dialog id="cancel-dialog">
+      <h2>Randevu iptal <em>edilsin mi?</em></h2>
+      <p>
+        Seçilen saat tekrar randevuya açılır. Müşteriye otomatik mesaj
+        gönderilmez.
+      </p>
+      <div class="form-actions">
+        <button id="cancel-no" class="small-button">Vazgeç</button
+        ><button id="cancel-yes" class="button dark">Randevuyu iptal et</button>
+      </div>
+    </dialog>
+    <dialog id="create-member-dialog">
+      <button
+        type="button"
+        class="dialog-close"
+        data-close-member-dialog
+        aria-label="Kapat"
+      >
+        ×
+      </button>
+      <p class="eyebrow">GAHİRE MÜŞTERİ HESABI</p>
+      <h2>Yeni <em>müşteri.</em></h2>
+      <form id="create-member-form">
+        <label
+          >Ad soyad<input
+            id="create-name"
+            required
+            minlength="2"
+            maxlength="80"
+            autocomplete="off" /></label
+        ><label
+          >Cep telefonu<input
+            id="create-phone"
+            type="tel"
+            required
+            maxlength="20"
+            placeholder="05xx xxx xx xx" /></label
+        ><label
+          >Kullanıcı adı<input
+            id="create-username"
+            required
+            pattern="[a-z0-9][a-z0-9_.-]{2,31}"
+            minlength="3"
+            maxlength="32"
+            autocapitalize="none"
+            spellcheck="false"
+            placeholder="ayse.yilmaz"
+          /><small
+            >Küçük İngilizce harfler, rakam, nokta, alt çizgi veya tire.</small
+          ></label
+        ><label
+          >Geçici şifre<input
+            id="create-password"
+            required
+            minlength="12"
+            maxlength="128"
+            autocomplete="off" /></label
+        ><button class="small-button" type="button" id="generate-password">
+          Güçlü şifre oluştur
+        </button>
+        <p class="muted">
+          Müşteri ilk girişte şifresini değiştirir. Kendi kendine üyelik
+          açılmaz.
+        </p>
+        <button class="button dark" type="submit">
+          Müşteri hesabını oluştur
+        </button>
+        <p id="create-member-message" role="status"></p>
+      </form>
+    </dialog>
+    <dialog id="credential-dialog">
+      <button
+        type="button"
+        class="dialog-close"
+        id="close-credentials"
+        aria-label="Kapat"
+      >
+        ×
+      </button>
+      <p class="eyebrow">MÜŞTERİYE İLETİLECEK BİLGİLER</p>
+      <h2>Giriş bilgileri <em>hazır.</em></h2>
+      <p id="credential-text" class="booking-summary"></p>
+      <p>
+        Bu geçici şifreyi müşteriye iletin. Pencereyi kapattığınızda buradan
+        tekrar görüntülenemez.
+      </p>
+      <button class="button dark" id="copy-credentials">
+        Bilgileri kopyala
+      </button>
+      <p id="credential-message" role="status"></p>
+    </dialog>
+  </body>
+</html>

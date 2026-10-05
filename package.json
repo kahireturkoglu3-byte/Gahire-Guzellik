@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "@supabase/supabase-js": "2.116.0",
+    "jsdom": "26.1.0",
+    "prettier": "3.6.2"
+  },
+  "name": "gahire-kaynak-kodlari",
+  "version": "3.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node tests/database.mjs && node tests/portal-database.mjs && node tests/edge.mjs && node tests/ui.mjs"
+  }
+}

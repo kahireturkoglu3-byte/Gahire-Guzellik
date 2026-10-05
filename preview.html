@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="theme-color" content="#30251f" />
+    <title>Gahire | Panel önizlemesi</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="preview.js" defer></script>
+  </head>
+  <body class="portal-body preview-body">
+    <div class="preview-notice">
+      <strong>ÖRNEK GÖRÜNÜM</strong
+      ><span
+        >Tüm kayıtlar kurgusaldır. Gerçek hesap açılmaz, randevu
+        kaydedilmez.</span
+      ><a href="index.html">Giriş sayfası</a>
+    </div>
+    <header class="portal-header">
+      <a class="brand" href="preview.html"
+        >GAHİRE<span>GÜZELLİK SALONU</span></a
+      >
+      <nav class="preview-switch" aria-label="Panel seçimi">
+        <button data-role="member" aria-pressed="true" class="selected">
+          Müşteri paneli</button
+        ><button data-role="admin" aria-pressed="false">Yönetim paneli</button>
+      </nav>
+    </header>
+    <main class="preview-layout">
+      <aside class="preview-sidebar">
+        <p class="eyebrow" id="preview-role-label">MÜŞTERİ ALANI</p>
+        <nav id="preview-nav" aria-label="Panel bölümleri"></nav>
+        <div class="preview-profile">
+          <span class="profile-monogram" id="preview-avatar">D</span>
+          <div>
+            <strong id="preview-person">Deniz · Örnek hesap</strong>
+            <p id="preview-person-note">Bakım yolculuğunuz</p>
+          </div>
+        </div>
+      </aside>
+      <div class="preview-content">
+        <div class="dashboard-heading">
+          <div>
+            <p class="eyebrow" id="preview-kicker">SİZE ÖZEL</p>
+            <h1 id="preview-title">Merhaba, <em>Deniz.</em></h1>
+            <p id="preview-subtitle">
+              Randevularınız ve bakım planınız bir arada.
+            </p>
+          </div>
+          <span class="preview-date"
+            >30 Eylül 2026<br />Çarşamba · Örnek gün</span
+          >
+        </div>
+        <div id="preview-stats" class="member-stats"></div>
+        <div id="preview-view"></div>
+      </div>
+    </main>
+    <footer class="portal-footer">
+      <span>Gahire Güzellik Salonu</span><span>Panel tasarımı önizlemesi</span>
+    </footer>
+    <dialog id="preview-dialog">
+      <button
+        type="button"
+        class="dialog-close"
+        id="preview-close"
+        aria-label="Kapat"
+      >
+        ×
+      </button>
+      <p class="eyebrow">ÖRNEK MÜŞTERİ DOSYASI</p>
+      <h2 id="preview-detail-name"></h2>
+      <div id="preview-detail"></div>
+      <button id="preview-close-bottom" class="button dark">
+        Dosyayı kapat
+      </button>
+    </dialog>
+  </body>
+</html>

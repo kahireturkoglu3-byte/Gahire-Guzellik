@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#30251f" />
+    <meta
+      name="description"
+      content="Gahire müşteri alanı. Randevularınızı, bakım geçmişinizi ve seanslarınızı takip edin."
+    />
+    <title>Gahire | Size özel bakım alanı</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="vendor/supabase-2.116.0.js" defer></script>
+    <script src="config.js" defer></script>
+    <script src="content.js" defer></script>
+    <script src="backend.js" defer></script>
+    <script src="portal.js" defer></script>
+  </head>
+  <body class="portal-body">
+    <header class="portal-header">
+      <a class="brand" href="index.html">GAHİRE<span>GÜZELLİK SALONU</span></a
+      ><span class="portal-header-note">SİZE ÖZEL BAKIM ALANI</span
+      ><a href="admin.html" class="portal-admin-link">Salon girişi</a>
+    </header>
+    <main>
+      <section id="member-login" class="member-login">
+        <div class="member-intro">
+          <p class="eyebrow">GAHİRE'YE HOŞ GELDİNİZ</p>
+          <h1>Bakımınızın<br /> her adımı,<br /> <em>size özel.</em></h1>
+          <p>
+            Randevularınız, seanslarınız ve güzellik yolculuğunuz.<br />Hepsi
+            sizin için ayrılmış tek bir yerde.
+          </p>
+          <div class="intro-details">
+            <span>01 <b>Randevularınız</b></span
+            ><span>02 <b>Bakım geçmişiniz</b></span
+            ><span>03 <b>Seans takibiniz</b></span>
+          </div>
+        </div>
+        <div class="member-login-card">
+          <p class="eyebrow">MÜŞTERİ GİRİŞİ</p>
+          <h2>Yeniden<br /> <em>hoş geldiniz.</em></h2>
+          <p>Salonumuzun size verdiği kullanıcı adı ve şifreyle giriş yapın.</p>
+          <form id="member-login-form">
+            <label
+              >Kullanıcı adı<input
+                id="member-username"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                required
+                minlength="3"
+                maxlength="32"
+                placeholder="Kullanıcı adınız" /></label
+            ><label
+              >Şifre
+              <div class="password-field">
+                <input
+                  id="member-password"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                  maxlength="128"
+                  placeholder="Şifreniz"
+                /><button
+                  type="button"
+                  id="show-password"
+                  aria-label="Şifreyi göster"
+                  aria-pressed="false"
+                >
+                  Göster
+                </button>
+              </div></label
+            >
+            <div id="login-captcha"></div>
+            <button class="button dark" type="submit" id="member-login-submit">
+              Hesabıma giriş yap
+            </button>
+            <p id="member-login-message" role="status" aria-live="polite"></p>
+          </form>
+          <p>
+            <a class="text-link" href="preview.html"
+              >Panelleri örnek kayıtlarla incele</a
+            >
+          </p>
+          <div class="account-help">
+            <span>Hesabınız yok mu veya şifrenizi mi unuttunuz?</span>
+            <p>
+              Hesap oluşturma ve şifre yenileme için salonumuzla iletişime
+              geçin.
+            </p>
+            <a id="member-contact" hidden target="_blank" rel="noopener"
+              >Salonla iletişime geçin</a
+            >
+          </div>
+        </div>
+      </section>
+      <section id="password-panel" class="password-panel" hidden>
+        <p class="eyebrow">HESABINIZIN GÜVENLİĞİ</p>
+        <h2>Şifreniz<br /><em>size ait olsun.</em></h2>
+        <p>
+          Size verilen geçici şifre yerine yalnızca sizin bildiğiniz bir şifre
+          belirleyin. En az 12 karakter, harf ve rakam kullanın.
+        </p>
+        <form id="password-form">
+          <label
+            >Yeni şifreniz<input
+              id="new-password"
+              type="password"
+              autocomplete="new-password"
+              required
+              minlength="12"
+              maxlength="128" /></label
+          ><label
+            >Yeni şifreniz tekrar<input
+              id="repeat-password"
+              type="password"
+              autocomplete="new-password"
+              required
+              minlength="12"
+              maxlength="128" /></label
+          ><button class="button dark" type="submit">Şifremi kaydet</button
+          ><button class="small-button" type="button" id="password-back" hidden>
+            Vazgeç
+          </button>
+          <p id="password-message" role="status"></p>
+        </form>
+        <button class="text-button" data-member-logout>Çıkış yap</button>
+      </section>
+      <section id="member-dashboard" class="member-dashboard" hidden>
+        <div class="dashboard-heading">
+          <div>
+            <p class="eyebrow">GAHİRE / MÜŞTERİ ALANI</p>
+            <h1>Merhaba, <em id="member-first-name"></em></h1>
+            <p>Bir sonraki güzel anınızı birlikte planlayalım.</p>
+          </div>
+          <div class="dashboard-actions">
+            <a class="button dark" href="salon.html#randevu">Yeni randevu al</a
+            ><button class="small-button" data-member-logout>Çıkış yap</button>
+          </div>
+        </div>
+        <p id="portal-message" role="status" aria-live="polite"></p>
+        <div class="member-stats">
+          <div>
+            <span>Yaklaşan randevu</span
+            ><strong id="member-upcoming-count">—</strong>
+          </div>
+          <div>
+            <span>Kalan paket seansı</span
+            ><strong id="member-remaining-count">—</strong>
+          </div>
+          <div>
+            <span>Tamamlanan işlem</span
+            ><strong id="member-completed-count">—</strong>
+          </div>
+        </div>
+        <div class="member-tabs" aria-label="Müşteri bölümleri">
+          <button
+            data-member-tab="overview"
+            class="selected"
+            aria-pressed="true"
+          >
+            Genel bakış</button
+          ><button data-member-tab="appointments" aria-pressed="false">
+            Randevularım</button
+          ><button data-member-tab="history" aria-pressed="false">
+            İşlem geçmişim</button
+          ><button data-member-tab="account" aria-pressed="false">
+            Hesabım
+          </button>
+        </div>
+        <div id="member-overview">
+          <div class="portal-section-heading">
+            <h2>Bir sonraki <em>randevunuz.</em></h2>
+            <button class="text-button" id="member-refresh">Yenile</button>
+          </div>
+          <div id="next-appointment"></div>
+          <div class="portal-section-heading">
+            <h2>Bakım <em>paketleriniz.</em></h2>
+          </div>
+          <div id="member-packages" class="member-package-grid"></div>
+        </div>
+        <div id="member-appointments" hidden>
+          <h2>Randevularım</h2>
+          <p class="muted">
+            İptal veya değişiklik için salonla iletişime geçebilirsiniz.
+          </p>
+          <div class="filters">
+            <label
+              >Randevu durumu<select id="member-appointment-filter">
+                <option value="">Tüm randevular</option>
+                <option value="upcoming">Yaklaşan randevular</option>
+                <option value="bekliyor">Onay bekleyenler</option>
+                <option value="tamamlandi">Tamamlananlar</option>
+                <option value="iptal">İptal edilenler</option>
+              </select></label
+            >
+          </div>
+          <div id="member-appointment-list"></div>
+          <button class="small-button" id="more-appointments" hidden>
+            Daha fazla göster
+          </button>
+        </div>
+        <div id="member-history" hidden>
+          <h2>İşlem geçmişim</h2>
+          <p class="muted">Salon tarafından tamamlanan işlemleriniz.</p>
+          <div id="member-history-list"></div>
+          <button class="small-button" id="more-history" hidden>
+            Daha fazla göster
+          </button>
+        </div>
+        <div id="member-account" hidden>
+          <h2>Hesabım</h2>
+          <dl class="account-details">
+            <dt>Ad soyad</dt>
+            <dd id="account-name"></dd>
+            <dt>Kullanıcı adı</dt>
+            <dd id="account-username"></dd>
+            <dt>Telefon</dt>
+            <dd id="account-phone"></dd>
+          </dl>
+          <p class="muted">
+            Bilgilerinizin düzeltilmesi için salonla iletişime geçin.
+          </p>
+          <button class="button dark" id="open-password">
+            Şifremi değiştir
+          </button>
+        </div>
+      </section>
+    </main>
+    <footer class="portal-footer">
+      <span>© <span id="portal-year"></span> Gahire Güzellik Salonu</span
+      ><span>Güzelliğinize ayrılmış bir an.</span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#30251f" />
+    <meta
+      name="description"
+      content="Gahire Güzellik Salonu. Cilt bakımı, kaş tasarımı, kirpik lifting, epilasyon, manikür & pedikür ve saç bakımı."
+    />
+    <title>Gahire | Güzelliğinize ayrılmış bir an</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="content.js" defer></script>
+    <script src="app.js" defer></script>
+    <script src="vendor/supabase-2.116.0.js" defer></script>
+    <script src="config.js" defer></script>
+    <script src="backend.js" defer></script>
+    <script src="member-guard.js" defer></script>
+    <script src="booking.js" defer></script>
+  </head>
+  <body class="member-guarded">
+    <p id="guard-status" role="status">Oturumunuz kontrol ediliyor…</p>
+    <a class="skip" href="#main">İçeriğe geç</a>
+    <div class="topline">GÜZELLİĞİNİZE AYRILMIŞ BİR AN.</div>
+    <header>
+      <a class="brand" href="#home" aria-label="Gahire ana sayfa"
+        >GAHİRE<span>GÜZELLİK SALONU</span></a
+      ><button
+        class="menu-toggle"
+        aria-controls="navigation"
+        aria-expanded="false"
+        aria-label="Menüyü aç"
+      >
+        <span></span><span></span>
+      </button>
+      <nav id="navigation" aria-label="Ana menü">
+        <a href="#home" class="active">Ana Sayfa</a
+        ><a href="#services">Hizmetlerimiz</a><a href="#prices">Fiyat Listesi</a
+        ><a href="#about">Hakkımızda</a><a href="#gallery">Galeri</a
+        ><a href="#contact">İletişim</a><a href="#randevu">Randevu</a>
+      </nav>
+      <a class="header-cta" href="#randevu">Randevu alın <span>↗</span></a>
+    </header>
+    <main id="main">
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> GAHİRE GÜZELLİK SALONU</p>
+          <h1>Güzelliğiniz,<br />en doğal<br /><em>haliyle.</em></h1>
+          <p class="lead">
+            Kendinize ayırdığınız zamanın en güzel hali.<br />Bakım, zarafet ve
+            size özel dokunuşlar.
+          </p>
+          <div class="hero-actions">
+            <a href="#services" class="button dark"
+              >Hizmetleri keşfedin <span>↗</span></a
+            ><a class="text-link" href="#about"
+              >Gahire ile tanışın <span>→</span></a
+            >
+          </div>
+          <div class="hero-foot">
+            <span>BAKIMIN ÖTESİNDE, BİR DENEYİM.</span
+            ><a href="#services" aria-label="Hizmetlere kaydır">↓</a>
+          </div>
+        </div>
+        <div class="hero-visual" data-media="hero">
+          <div class="visual-inner">
+            <span class="visual-overline">THE ART OF SELF CARE</span
+            ><span class="monogram" aria-hidden="true">G</span
+            ><span class="visual-brand">GAHİRE</span
+            ><span class="visual-note">GÜZELLİK, DETAYLARDA SAKLI.</span>
+          </div>
+          <div class="visual-caption">
+            <span>01 / GAHİRE DÜNYASI</span><span>Salon görseli yakında</span>
+          </div>
+        </div>
+      </section>
+      <div class="service-ribbon" aria-hidden="true">
+        <span>CİLT BAKIMI</span><b>✧</b><span>KAŞ & KİRPİK</span><b>✧</b
+        ><span>SAÇ BAKIMI</span><b>✧</b><span>EL & AYAK BAKIMI</span><b>✧</b
+        ><span>EPİLASYON</span>
+      </div>
+      <section class="section services" id="services">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">01 — HİZMETLERİMİZ</p>
+            <h2>Size iyi gelen<br /><em>küçük dokunuşlar.</em></h2>
+          </div>
+          <p>
+            Günlük bakımınızdan kendinize ayırdığınız<br />özel anlara,
+            güzelliğin her detayında Gahire.
+          </p>
+        </div>
+        <div class="service-grid" id="service-grid"></div>
+      </section>
+      <section class="about section" id="about">
+        <div class="about-visual" data-media="about">
+          <span class="eyebrow">GAHİRE'NİN DÜNYASI</span>
+          <div class="about-word">Kendinize<br /><em>bir an.</em></div>
+          <span class="placeholder-label">Salondan kareler yakında</span>
+        </div>
+        <div class="about-copy">
+          <p class="eyebrow">02 — GAHİRE İLE TANIŞIN</p>
+          <h2>Biraz yavaşlayın.<br /><em>Bu an sizin.</em></h2>
+          <p>
+            Güzelliğin, kendinizi iyi hissetmekle başladığına inanıyoruz.
+            Gahire'de bakımınıza ayırdığınız zamanı, kendinizle yeniden
+            buluştuğunuz bir molaya dönüştürmek istiyoruz.
+          </p>
+          <p>
+            Cilt, saç, kaş, kirpik, el ve ayak bakımı… Doğal güzelliğinize eşlik
+            eden dokunuşları tek bir yerde keşfedin.
+          </p>
+          <a href="#services" class="text-link"
+            >Bakımınızı keşfedin <span>↗</span></a
+          >
+        </div>
+      </section>
+      <section class="section prices" id="prices">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">03 — BAKIM MENÜSÜ</p>
+            <h2>Güzelliğinize <em>yer açın.</em></h2>
+          </div>
+          <p>
+            İhtiyacınıza uygun bakımı keşfedin.<br />Fiyat listemiz çok yakında
+            burada.
+          </p>
+        </div>
+        <div class="price-list" id="price-list"></div>
+      </section>
+      <section class="section gallery" id="gallery">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">04 — GALERİ</p>
+            <h2>Gahire'den <em>yansımalar.</em></h2>
+          </div>
+          <p>Salonumuz ve çalışmalarımızdan<br />kareler yakında burada.</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-tile" data-media="gallery1">
+            <span>01</span>
+            <p>Bakımın<br /><em>zarafeti.</em></p>
+            <small>CİLT & BAKIM</small>
+          </div>
+          <div class="gallery-tile" data-media="gallery2">
+            <span>02</span>
+            <p>Her detayda<br /><em>siz.</em></p>
+            <small>KAŞ & KİRPİK</small>
+          </div>
+          <div class="gallery-tile" data-media="gallery3">
+            <span>03</span>
+            <p>Doğal bir<br /><em>ışıltı.</em></p>
+            <small>SAÇ & GÜZELLİK</small>
+          </div>
+        </div>
+      </section>
+      <section class="reviews section">
+        <p class="eyebrow">MİSAFİRLERİMİZDEN</p>
+        <h2>Güzel deneyimler,<br /><em>güzel izler bırakır.</em></h2>
+        <p>
+          Misafirlerimizin paylaştığı deneyimlere<br />yakında bu alanda yer
+          vereceğiz.
+        </p>
+      </section>
+      <section class="section booking" id="randevu">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">RANDEVUNUZU PLANLAYIN</p>
+            <h2>Kendinize ayırdığınız<br /><em>zamanı seçin.</em></h2>
+          </div>
+          <p>
+            Hizmetinizi seçin, uygun saati belirleyin.<br />Talebiniz salon
+            onayından sonra kesinleşir.
+          </p>
+        </div>
+        <p id="booking-setup" class="notice" hidden></p>
+        <form id="booking-form" novalidate>
+          <ol class="booking-progress">
+            <li class="current" aria-current="step">01 · Hizmet & zaman</li>
+            <li>02 · Bilgileriniz</li>
+            <li>03 · Kontrol & gönderim</li>
+          </ol>
+          <h3 id="booking-step-title" tabindex="-1">
+            Bakımınızı ve zamanınızı seçin
+          </h3>
+          <div data-booking-step="1">
+            <div class="form-grid">
+              <label
+                >Hizmet<select id="booking-service" required>
+                  <option value="">Hizmet seçin</option>
+                </select></label
+              ><label
+                >Tarih<input type="date" id="booking-date" required
+              /></label>
+            </div>
+            <label
+              >Paketiniz<select id="booking-package">
+                <option value="">Paket dışında randevu</option>
+              </select></label
+            >
+            <div class="slot-heading">
+              <h4>Uygun saatler</h4>
+              <button type="button" id="refresh-slots" class="small-button">
+                Saatleri yenile
+              </button>
+            </div>
+            <p id="slot-message" role="status">
+              Saatleri görmek için hizmet ve tarih seçin.
+            </p>
+            <div
+              id="time-slots"
+              class="time-slots"
+              aria-label="Randevu saatleri"
+            ></div>
+            <p id="selected-time">Henüz saat seçilmedi.</p>
+          </div>
+          <div data-booking-step="2" hidden>
+            <div class="form-grid">
+              <label
+                >Adınız ve soyadınız<input
+                  id="customer-name"
+                  autocomplete="name"
+                  minlength="2"
+                  maxlength="80"
+                  required
+                  placeholder="Ad Soyad" /></label
+              ><label
+                >Cep telefonunuz<input
+                  id="customer-phone"
+                  type="tel"
+                  autocomplete="tel"
+                  maxlength="20"
+                  required
+                  placeholder="05xx xxx xx xx"
+              /></label>
+            </div>
+            <label
+              >Notunuz <span class="muted">(isteğe bağlı)</span
+              ><textarea
+                id="customer-note"
+                maxlength="500"
+                rows="3"
+                placeholder="Randevunuzla ilgili kısa bir not yazabilirsiniz. Sağlık bilgisi paylaşmayın."
+              ></textarea>
+            </label>
+            <div class="honeypot" aria-hidden="true">
+              <label
+                >Web sitesi<input id="website" tabindex="-1" autocomplete="off"
+              /></label>
+            </div>
+          </div>
+          <div data-booking-step="3" hidden>
+            <p id="booking-summary" class="booking-summary"></p>
+            <p class="notice">
+              Bu işlem bir randevu talebidir. Kesin onay için salon sizinle
+              iletişime geçecektir.
+            </p>
+            <label class="check-label"
+              ><input id="booking-consent" type="checkbox" required /> Adımın ve
+              telefonumun randevu talebimi değerlendirmek ve benimle iletişim
+              kurmak amacıyla kullanılmasını kabul ediyorum.</label
+            >
+            <div id="captcha"></div>
+          </div>
+          <p id="booking-message" role="status" aria-live="polite"></p>
+          <div class="form-actions">
+            <button type="button" class="small-button" id="booking-prev" hidden>
+              ← Geri</button
+            ><button type="button" class="button dark" id="booking-next">
+              Devam et →</button
+            ><button
+              type="submit"
+              class="button dark"
+              id="booking-submit"
+              hidden
+            >
+              Randevu talebini gönder ↗
+            </button>
+          </div>
+        </form>
+        <div id="booking-success" class="booking-success" hidden>
+          <p class="eyebrow">TALEBİNİZ KAYDEDİLDİ</p>
+          <h3>Güzel bir başlangıç.</h3>
+          <p id="booking-success-text"></p>
+          <p>
+            Talep numaranızı saklayın. Salon onayı olmadan randevunuz
+            kesinleşmez.
+          </p>
+          <a
+            id="booking-whatsapp"
+            class="button dark"
+            target="_blank"
+            rel="noopener"
+            hidden
+            >WhatsApp'tan bilgi alın ↗</a
+          >
+        </div>
+      </section>
+      <section class="contact section" id="contact">
+        <div>
+          <p class="eyebrow">05 — İLETİŞİM & RANDEVU</p>
+          <h2>Kendiniz için<br /><em>güzel bir başlangıç.</em></h2>
+          <p>Bakımınıza birlikte karar verelim.</p>
+          <button class="button light" data-contact>
+            WhatsApp ile iletişim <span>↗</span>
+          </button>
+          <p class="contact-status">
+            İletişim bilgilerimiz yakında paylaşılacak.
+          </p>
+        </div>
+        <div class="contact-details">
+          <div>
+            <span>ADRES</span>
+            <p>Salon adresimiz yakında burada.</p>
+          </div>
+          <div>
+            <span>ÇALIŞMA SAATLERİ</span>
+            <p>Çalışma saatlerimiz yakında paylaşılacak.</p>
+          </div>
+          <div>
+            <span>RANDEVU</span>
+            <p><a href="#randevu">Online randevu talebi oluşturun ↗</a></p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <a class="brand" href="#home">GAHİRE<span>GÜZELLİK SALONU</span></a>
+      <p>
+        Güzelliğinize ayrılmış bir an. ·
+        <a href="admin.html">Yönetici girişi</a>
+      </p>
+      <span>© <span id="year"></span> Gahire Güzellik Salonu</span
+      ><a href="#home" class="back-top" aria-label="Sayfanın başına dön">↑</a>
+    </footer>
+    <button
+      class="floating-contact"
+      data-contact
+      aria-label="WhatsApp iletişim"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        aria-hidden="true"
+      >
+        <path
+          d="M20 11.5a8.5 8.5 0 0 1-12.8 7.3L3 20l1.2-4.2A8.5 8.5 0 1 1 20 11.5Z"
+        />
+        <path d="M8 7c-2 3 3 8 6 7l1-2-2-1-1 1-2-2 1-1-1-2Z" />
+      </svg>
+    </button>
+    <dialog id="contact-dialog">
+      <button class="dialog-close" aria-label="Kapat">×</button>
+      <p class="eyebrow">GAHİRE GÜZELLİK SALONU</p>
+      <h2>Yakında <em>görüşmek üzere.</em></h2>
+      <p>
+        WhatsApp hattımız henüz paylaşılmadı. İletişim bilgilerimiz eklendiğinde
+        buradan doğrudan bize ulaşabilirsiniz.
+      </p>
+      <button class="button dark dialog-done">Tamam</button>
+    </dialog>
+  </body>
+</html>
