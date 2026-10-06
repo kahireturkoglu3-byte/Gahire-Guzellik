@@ -579,7 +579,7 @@
   });
   if (!api.ready) {
     $("login-message").textContent =
-      "Yönetici girişi henüz açılmadı. Paneli aşağıdaki önizlemeden inceleyebilirsiniz.";
+      "Yönetici girişi şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.";
     $("login-submit").disabled = true;
   } else {
     db.auth.onAuthStateChange((event, session) => {
