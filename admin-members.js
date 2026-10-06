@@ -204,7 +204,7 @@
       page = 0;
       await loadMembers();
     } catch (error) {
-      $("create-member-message").textContent = error.message;
+      $("create-member-message").textContent = api.errorMessage(error);
     } finally {
       working = false;
       e.submitter.disabled = false;
@@ -307,7 +307,7 @@
             message("Kayıt iptal edildi; paket sayacı güncellendi.");
             await openCustomer(id);
           } catch (error) {
-            message(error.message);
+            message(api.errorMessage(error));
           } finally {
             button.disabled = false;
           }
@@ -379,7 +379,7 @@
       await loadMembers();
       message("Hesap durumu güncellendi.");
     } catch (error) {
-      message(error.message);
+      message(api.errorMessage(error));
     } finally {
       working = false;
     }
@@ -403,7 +403,7 @@
       });
       if (allowed) credentials(chosen.username, pass);
     } catch (error) {
-      message(error.message);
+      message(api.errorMessage(error));
     } finally {
       working = false;
     }
@@ -427,7 +427,7 @@
       await openCustomer(id);
       message("Bakım paketi eklendi.");
     } catch (error) {
-      message(error.message);
+      message(api.errorMessage(error));
     } finally {
       working = false;
       e.submitter.disabled = false;
@@ -459,7 +459,7 @@
       await openCustomer(id);
       message("İşlem geçmişe eklendi ve paket sayacı güncellendi.");
     } catch (error) {
-      message(error.message);
+      message(api.errorMessage(error));
     } finally {
       working = false;
       e.submitter.disabled = false;

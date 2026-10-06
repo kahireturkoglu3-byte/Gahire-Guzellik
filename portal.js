@@ -162,7 +162,7 @@
       if (error) throw error;
       $("member-password").value = "";
     } catch (error) {
-      msg("member-login-message", error.message || "Giriş yapılamadı.");
+      msg("member-login-message", api.errorMessage(error));
     } finally {
       busy = false;
       $("member-login-submit").disabled = false;
@@ -200,7 +200,7 @@
       const { data } = await db.auth.getSession();
       await gate(data.session);
     } catch (error) {
-      msg("password-message", error.message);
+      msg("password-message", api.errorMessage(error));
     } finally {
       busy = false;
       button.disabled = false;
@@ -341,7 +341,7 @@
       });
       msg("portal-message", "");
     } catch (e) {
-      if (ticket === version) msg("portal-message", e.message);
+      if (ticket === version) msg("portal-message", api.errorMessage(e));
     }
   }
   async function loadHistory(append = false) {

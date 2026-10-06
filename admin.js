@@ -85,9 +85,8 @@
       });
       if (error) throw error;
       $("login-message").textContent = "";
-    } catch {
-      $("login-message").textContent =
-        "Giriş yapılamadı. E-posta ve şifrenizi kontrol edin.";
+    } catch (error) {
+      $("login-message").textContent = api.errorMessage(error);
     } finally {
       $("login-submit").disabled = false;
     }

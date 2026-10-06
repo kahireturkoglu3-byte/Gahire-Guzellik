@@ -105,8 +105,7 @@
         );
     } catch (e) {
       if (current !== slotRequest) return;
-      $("slot-message").textContent =
-        e.message || "Saatler yüklenemedi. Tekrar deneyin.";
+      $("slot-message").textContent = api.errorMessage(e);
     }
   }
   $("booking-service").addEventListener("change", () => {
@@ -184,11 +183,7 @@
       }
       note("");
     } catch (e) {
-      note(
-        e.message ||
-          "Bağlantı kesildi. Bilgileri değiştirmeden tekrar deneyebilirsiniz.",
-        true,
-      );
+      note(api.errorMessage(e), true);
       if (e.code === "GH_SLOT") {
         navigate(1);
         submitting = false;
@@ -301,7 +296,7 @@
         await loadSlots();
       }
     } catch (e) {
-      note(e.message, true);
+      note(api.errorMessage(e), true);
       $("booking-next").disabled = true;
     }
   }
