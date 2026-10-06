@@ -396,3 +396,81 @@ preview.window.close();
 console.log(
   `${count} portal UI checks passed in jsdom (not a visual browser test).`,
 );
+
+const errors = await page();
+errors.window.GAHIRE_BACKEND = {
+  url: "https://example.supabase.co",
+  publishableKey: "public",
+  functionName: "booking-api",
+};
+errors.window.supabase = {
+  createClient: () => ({
+    auth: { getSession: async () => ({ data: { session: null } }) },
+  }),
+};
+errors.window.AbortSignal.timeout = () => undefined;
+await script(errors, "backend.js");
+const apiErrors = errors.window.GahireAPI;
+await test("Login pages contain no preview links or accidental linked help text", async () => {
+  for (const name of ["index.html", "admin.html"]) {
+    const d = await page(name);
+    assert.equal(
+      d.window.document.querySelectorAll('a[href*="preview.html"]').length,
+      0,
+    );
+    assert.equal(
+      d.window.document.querySelector(".account-help")?.closest("a") || null,
+      null,
+    );
+    d.window.close();
+  }
+});
+await test("Network failure becomes Turkish without exposing technical details", async () => {
+  errors.window.fetch = async () => {
+    throw new TypeError("Failed to fetch");
+  };
+  await assert.rejects(apiErrors.edge({ action: "slots" }), (e) => {
+    assert.match(e.message, /Sunucuya bağlanılamadı/);
+    assert.equal(apiErrors.errorMessage(e), e.message);
+    return !e.message.includes("fetch");
+  });
+});
+await test("Timeout and invalid login have distinct Turkish messages", () => {
+  assert.match(apiErrors.errorMessage({ name: "TimeoutError" }), /zamanında/);
+  assert.match(
+    apiErrors.errorMessage({ code: "invalid_credentials" }),
+    /Giriş bilgileri hatalı/,
+  );
+  assert.match(apiErrors.errorMessage({ status: 429 }), /Çok fazla deneme/);
+});
+await test("Unknown server details and malformed responses stay out of the UI", async () => {
+  errors.window.fetch = async () => ({
+    ok: false,
+    status: 500,
+    json: async () => {
+      throw new SyntaxError("Unexpected token <");
+    },
+  });
+  await assert.rejects(
+    apiErrors.edge({ action: "book" }),
+    /Sunucudan yanıt alınamadı/,
+  );
+  assert(
+    !apiErrors
+      .errorMessage({ message: "SQL internal failure private table" })
+      .includes("SQL"),
+  );
+});
+await test("Business error code survives normalization for slot refresh", async () => {
+  errors.window.fetch = async () => ({
+    ok: false,
+    status: 400,
+    json: async () => ({ error: "GH_SLOT", code: "GH_SLOT" }),
+  });
+  await assert.rejects(
+    apiErrors.edge({ action: "book" }),
+    (e) => e.code === "GH_SLOT" && e.message.includes("Başka bir saat"),
+  );
+});
+errors.window.close();
+console.log("5 production login/error regression checks passed.");

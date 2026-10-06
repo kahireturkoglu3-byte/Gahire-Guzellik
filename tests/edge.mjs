@@ -216,3 +216,25 @@ await test("Staff session recording uses verified admin identity", async () => {
 console.log(
   `${count} authenticated API boundary checks passed (mocked network).`,
 );
+await test("GitHub Pages preflight accepts only the exact production origin", async () => {
+  const r = await handler(
+    new Request("https://example.supabase.co/functions/v1/booking-api", {
+      method: "OPTIONS",
+      headers: { Origin: "https://kahireturkoglu3-byte.github.io" },
+    }),
+  );
+  assert.equal(r.status, 204);
+  assert.equal(
+    r.headers.get("access-control-allow-origin"),
+    "https://kahireturkoglu3-byte.github.io",
+  );
+  const denied = await handler(
+    new Request("https://example.supabase.co/functions/v1/booking-api", {
+      method: "OPTIONS",
+      headers: {
+        Origin: "https://kahireturkoglu3-byte.github.io.evil.example",
+      },
+    }),
+  );
+  assert.equal(denied.status, 403);
+});
