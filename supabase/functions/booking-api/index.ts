@@ -1,13 +1,19 @@
 // Gahire üye API'si. Anahtarlar yalnızca Supabase Edge Function ortamından okunur.
 const url = Deno.env.get("SUPABASE_URL")!;
 const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const allowed = (Deno.env.get("ALLOWED_ORIGINS") || "")
-  .split(",")
+// Public deployment addresses are versioned with the site; secrets remain in Supabase.
+const productionHost = "kahireturkoglu3-byte.github.io";
+const allowed = [
+  `https://${productionHost}`,
+  ...(Deno.env.get("ALLOWED_ORIGINS") || "").split(","),
+]
   .map((s) => s.trim())
   .filter(Boolean);
 const secret = Deno.env.get("TURNSTILE_SECRET_KEY");
-const hosts = (Deno.env.get("TURNSTILE_HOSTNAMES") || "")
-  .split(",")
+const hosts = [
+  productionHost,
+  ...(Deno.env.get("TURNSTILE_HOSTNAMES") || "").split(","),
+]
   .map((s) => s.trim())
   .filter(Boolean);
 const uidPattern =
