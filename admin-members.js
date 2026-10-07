@@ -142,6 +142,7 @@
   $("open-create-member").addEventListener("click", () => {
     if (!allowed) return;
     $("create-member-form").reset();
+    $("create-username").setCustomValidity("");
     $("create-password").value = password();
     $("create-member-message").textContent = "";
     $("create-member-dialog").showModal();
@@ -177,22 +178,37 @@
         "Kopyalanamadı. Metni seçerek kopyalayabilirsiniz.";
     }
   });
+  const usernameHint =
+    "Kullanıcı adı 3–32 karakter olmalı; küçük İngilizce harf veya rakamla başlamalı. Türkçe harf ve boşluk kullanmayın. Örnek: emirhan.gurbuz";
+  $("create-username").addEventListener("input", () => {
+    $("create-username").setCustomValidity("");
+    $("create-member-message").textContent = "";
+  });
+  $("create-username").addEventListener("invalid", () => {
+    $("create-username").setCustomValidity(usernameHint);
+    $("create-member-message").textContent = usernameHint;
+  });
   $("create-member-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (working || !allowed) return;
+    const name = $("create-name").value.trim();
+    const username = $("create-username").value.trim().toLowerCase();
+    if (name.length < 2 || name.length > 80)
+      return ($("create-member-message").textContent = "Ad soyad 2–80 karakter olmalı.");
+    if (!/^[a-z0-9][a-z0-9_.-]{2,31}$/.test(username))
+      return ($("create-member-message").textContent = usernameHint);
     const phone = api.phone($("create-phone").value);
     if (!phone)
       return ($("create-member-message").textContent =
         "Geçerli bir cep telefonu yazın.");
     const pass = $("create-password").value,
-      username = $("create-username").value.trim().toLowerCase(),
       v = epoch;
     working = true;
     e.submitter.disabled = true;
     try {
       await api.edge({
         action: "create_member",
-        name: $("create-name").value.trim(),
+        name,
         phone,
         username,
         password: pass,

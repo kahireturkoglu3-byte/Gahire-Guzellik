@@ -360,14 +360,15 @@
           >Kullanıcı adı<input
             id="create-username"
             required
-            pattern="[a-z0-9][a-z0-9_.-]{2,31}"
+            pattern="[a-z0-9][a-z0-9_.\-]{2,31}"
+            title="3–32 karakter kullanın: küçük İngilizce harf, rakam, nokta, alt çizgi veya tire."
             minlength="3"
             maxlength="32"
             autocapitalize="none"
             spellcheck="false"
             placeholder="ayse.yilmaz"
           /><small
-            >Küçük İngilizce harfler, rakam, nokta, alt çizgi veya tire.</small
+            >3–32 karakter: küçük İngilizce harfler, rakam, nokta, alt çizgi veya tire. Türkçe harf ve boşluk kullanmayın.</small
           ></label
         ><label
           >Geçici şifre<input
