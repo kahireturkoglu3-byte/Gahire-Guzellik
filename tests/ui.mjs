@@ -474,3 +474,44 @@ await test("Business error code survives normalization for slot refresh", async 
 });
 errors.window.close();
 console.log("5 production login/error regression checks passed.");
+
+await test("Customer username pattern works with modern HTML v flag", async () => {
+  const d = await page("admin.html");
+  const pattern = d.window.document.querySelector("#create-username").getAttribute("pattern");
+  const regex = new RegExp(`^(?:${pattern})$`, "v");
+  for (const username of ["emirhan.gurbuz", "ayse-yilmaz", "ayse_12"])
+    assert(regex.test(username));
+  for (const username of ["ab", "emirhan gurbuz", "emirhan.gürbüz", "a".repeat(33)])
+    assert(!regex.test(username));
+  d.window.close();
+});
+
+await test("Invalid customer details are explained before any API write", async () => {
+  const d = await page("admin.html");
+  const doc = d.window.document;
+  let writes = 0;
+  const query = new Proxy({}, {
+    get: (_, key) => key === "then"
+      ? (resolve) => resolve({ data: [], error: null, count: 0 })
+      : () => query,
+  });
+  d.window.GahireAPI = {
+    client: { from: () => query },
+    phone: () => "905551111111",
+    edge: async () => { writes++; },
+  };
+  await script(d, "admin-members.js");
+  d.window.dispatchEvent(new d.window.Event("gahire:admin-ready"));
+  await tick();
+  doc.querySelector("#create-name").value = "Test Müşteri";
+  doc.querySelector("#create-username").value = "geçersiz ad";
+  doc.querySelector("#create-member-form").dispatchEvent(new d.window.Event("submit", { cancelable: true }));
+  assert.match(doc.querySelector("#create-member-message").textContent, /Türkçe harf ve boşluk/);
+  assert.equal(writes, 0);
+  doc.querySelector("#create-username").value = "test.musteri";
+  doc.querySelector("#create-name").value = " ";
+  doc.querySelector("#create-member-form").dispatchEvent(new d.window.Event("submit", { cancelable: true }));
+  assert.match(doc.querySelector("#create-member-message").textContent, /Ad soyad/);
+  assert.equal(writes, 0);
+  d.window.close();
+});
