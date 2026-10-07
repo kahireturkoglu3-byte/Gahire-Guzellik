@@ -2,7 +2,7 @@
    Görselleri dist/images/ içine ekleyin; örnek: hero: 'images/salon.webp'.
    whatsapp: ülke koduyla, yalnızca rakamlar. Boşsa bilgi penceresi açılır. */
 window.GAHIRE = {
-  whatsapp: "",
+  whatsapp: "905012202131",
   media: { hero: "", about: "", gallery1: "", gallery2: "", gallery3: "" },
   services: [
     {
