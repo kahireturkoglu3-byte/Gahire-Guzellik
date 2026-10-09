@@ -515,3 +515,28 @@ await test("Invalid customer details are explained before any API write", async 
   assert.equal(writes, 0);
   d.window.close();
 });
+
+await test("Captcha errors explain the cause and clear after successful verification", async () => {
+  const d = await page();
+  await script(d, "content.js");
+  let options;
+  d.window.GAHIRE_BACKEND = { turnstileSiteKey: "test-key" };
+  d.window.GahireAPI = { ready: true, client: { auth: { onAuthStateChange() {} } } };
+  d.window.turnstile = { render: (_, o) => { options = o; return 1; } };
+  d.window.console.warn = () => {};
+  await script(d, "portal.js");
+  d.window.document.querySelector('script[src*="challenges.cloudflare.com"]').dispatchEvent(new d.window.Event("load"));
+  const message = d.window.document.querySelector("#member-login-message");
+  options["error-callback"]("110200");
+  assert.match(message.textContent, /ayarlarının/);
+  options["error-callback"]("600010");
+  assert.match(message.textContent, /bu tarayıcıdaki/);
+  options.callback("test-token");
+  assert.equal(message.textContent, "");
+  options["expired-callback"]();
+  assert.match(message.textContent, /süresi doldu/);
+  message.textContent = "Giriş bilgileri hatalı.";
+  options.callback("test-token-2");
+  assert.equal(message.textContent, "Giriş bilgileri hatalı.");
+  d.window.close();
+});
