@@ -2324,3 +2324,35 @@ dialog { max-height: calc(100dvh - 32px); overflow-y: auto; overscroll-behavior:
   .preview-switch { flex-wrap: wrap; }
   .preview-switch button { min-height: 44px; }
 }
+
+/* Gahire Instagram contact button */
+.instagram-button,
+.account-help .instagram-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 14px 18px;
+  margin-top: 14px;
+  border: 1px solid #a48a63;
+  border-radius: 6px;
+  background: #30251f;
+  color: #f8f2e8;
+  text-decoration: none;
+  text-align: left;
+  box-shadow: 0 5px 16px rgb(48 37 31 / 10%);
+  transition: background .2s ease, box-shadow .2s ease;
+}
+.instagram-button svg { width: 25px; height: 25px; flex-shrink: 0; color: #d8bc90; }
+.instagram-button strong { display: block; font-size: 13px; font-weight: 600; line-height: 1.5; }
+.instagram-button span span { display: block; font-size: 12px; color: #d8bc90; line-height: 1.6; }
+.instagram-button .instagram-arrow { margin-left: auto; font-size: 22px; }
+.instagram-button:hover { background: #49392d; box-shadow: 0 7px 20px rgb(48 37 31 / 18%); }
+.instagram-button:focus-visible { outline: 3px solid #b89866; outline-offset: 4px; }
+.contact-status .instagram-button { display: flex; width: fit-content; }
+@media (max-width: 400px) {
+  .instagram-button, .account-help .instagram-button { padding: 12px; gap: 9px; }
+  .instagram-button strong { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .instagram-button { transition: none; } }
