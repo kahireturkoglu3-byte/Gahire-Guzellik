@@ -19,6 +19,7 @@
     version = 0,
     widget = null,
     captcha = "",
+    captchaNotice = "",
     busy = false,
     historyPage = 0,
     appointmentPage = 0,
@@ -62,16 +63,28 @@
       language: "tr",
       callback: (t) => {
         captcha = t;
+        if ($("member-login-message").textContent === captchaNotice)
+          msg("member-login-message", "");
+        captchaNotice = "";
       },
       "expired-callback": () => {
         captcha = "";
+        captchaNotice = "Güvenlik doğrulamasının süresi doldu. Kutudan yeniden doğrulayın.";
+        msg("member-login-message", captchaNotice);
       },
-      "error-callback": () => {
+      "error-callback": (code) => {
         captcha = "";
-        msg(
-          "member-login-message",
-          "Güvenlik doğrulaması yüklenemedi. Sayfayı yenileyin.",
-        );
+        const id = String(code);
+        if (["110100", "110110", "110200", "400020", "400021", "400070"].includes(id))
+          captchaNotice = "Giriş güvenliği ayarlarının salon tarafından kontrol edilmesi gerekiyor. Lütfen salonla iletişime geçin.";
+        else if (["110600", "110620"].includes(id))
+          captchaNotice = "Güvenlik doğrulaması zaman aşımına uğradı. Sayfayı yenileyip tekrar deneyin.";
+        else if (/^(300|600)/.test(id))
+          captchaNotice = "Cloudflare bu tarayıcıdaki doğrulamayı tamamlayamadı. Sorun sürerse salonla iletişime geçin.";
+        else
+          captchaNotice = "Güvenlik doğrulaması yüklenemedi. İnternet bağlantınızı kontrol edip sayfayı yenileyin.";
+        msg("member-login-message", captchaNotice);
+        if (/^\d{6}$/.test(id)) console.warn("Gahire doğrulama kodu:", id);
       },
     });
   }
