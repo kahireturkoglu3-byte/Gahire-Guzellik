@@ -6,6 +6,7 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>Gahire | Yönetim paneli</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="admin-theme.css" />
     <script src="vendor/supabase-2.116.0.js" defer></script>
     <script src="config.js" defer></script>
     <script src="backend.js" defer></script>
@@ -43,14 +44,26 @@
         <p id="login-message" role="status"></p>
       </section>
       <section id="admin-panel" hidden>
+        <div class="admin-layout">
+        <nav class="admin-tabs" aria-label="Panel bölümleri">
+          <p class="admin-nav-label">ÇALIŞMA ALANINIZ</p>
+          <button type="button" data-tab="appointments" class="selected"><span class="admin-nav-icon" aria-hidden="true">▦</span><span>Randevular<small>Günlük ajanda ve onaylar</small></span></button>
+          <button type="button" data-tab="members"><span class="admin-nav-icon" aria-hidden="true">◎</span><span>Müşteriler<small>Hesaplar, paketler ve seanslar</small></span></button>
+          <button type="button" data-tab="settings"><span class="admin-nav-icon" aria-hidden="true">⚙</span><span>Salon ayarları<small>Hizmetler ve çalışma saatleri</small></span></button>
+          <div class="admin-nav-note">Her şey yerli yerinde.<br />Salonunuz için tek bir çalışma alanı.</div>
+        </nav>
+        <div class="admin-content">
         <div class="admin-heading">
           <div>
             <p class="eyebrow">GAHİRE / SALON YÖNETİMİ</p>
-            <h1>Bugüne <em>bir bakış.</em></h1>
+            <h1>Salon <em>yönetimi.</em></h1>
+            <p class="admin-intro">Randevularınız, müşterileriniz ve salonunuz. Hepsi bir arada.</p>
           </div>
           <button class="small-button" id="logout">Çıkış yap</button>
         </div>
-        <div class="admin-toolbar">
+        <details class="admin-notifications">
+          <summary>Sesli bildirim ayarları</summary>
+          <div class="admin-toolbar">
           <button class="small-button" id="alarm-toggle" aria-pressed="false">
             Sesli uyarıyı aç</button
           ><label
@@ -63,24 +76,20 @@
               value="50" /></label
           ><span id="alarm-status" role="status">Sesli uyarı kapalı.</span>
         </div>
+        </details>
         <div class="admin-stats">
           <div>
             <span>Onay bekleyen · tüm tarihler</span
-            ><strong id="pending-count">—</strong>
+            ><strong id="pending-count">—</strong><small>Tüm tarihlerdeki talepler</small>
           </div>
           <div>
             <span>Bugünkü aktif randevular</span
-            ><strong id="today-count">—</strong>
+            ><strong id="today-count">—</strong><small>Günün aktif randevuları</small>
           </div>
           <div>
             <span>Bağlantı</span
-            ><strong id="connection-state">Kontrol ediliyor</strong>
+            ><strong id="connection-state">Kontrol ediliyor</strong><small>Güncel bağlantı durumu</small>
           </div>
-        </div>
-        <div class="admin-tabs" aria-label="Panel bölümleri">
-          <button data-tab="appointments" class="selected">Randevular</button
-          ><button data-tab="members">Müşteriler & seanslar</button
-          ><button data-tab="settings">Hizmetler & çalışma saatleri</button>
         </div>
         <p id="admin-message" role="status" aria-live="polite"></p>
         <div id="appointments-view">
@@ -139,9 +148,9 @@
         </div>
         <div id="members-view" hidden>
           <div class="portal-section-heading">
-            <h2>Müşteriler & seanslar</h2>
+            <div><p class="eyebrow">MÜŞTERİ YÖNETİMİ</p><h2>Müşteriler & seanslar</h2><p class="admin-intro">Müşteri dosyasından paketleri ve işlem geçmişini yönetin.</p></div>
             <button class="button dark" id="open-create-member">
-              Yeni müşteri
+              + Yeni müşteri
             </button>
           </div>
           <div class="filters">
@@ -252,8 +261,8 @@
           </section>
         </div>
         <div id="settings-view" hidden>
-          <section class="settings-box">
-            <h2>Randevu ayarları</h2>
+          <div class="admin-settings-heading"><p class="eyebrow">SALONUNUZA ÖZEL</p><h2>Salon ayarları</h2><p class="admin-intro">Değiştirmek istediğiniz başlığı açın ve ilgili alandan kaydedin.</p></div>
+          <details class="settings-box" open><summary><h2>Randevu ayarları</h2><span aria-hidden="true">+</span></summary>
             <p class="muted">
               Önce hizmet sürelerini ve çalışma saatlerini doğrulayın. Aynı anda
               bir müşteriye randevu verilir.
@@ -280,26 +289,23 @@
                 Ayarları kaydet
               </button>
             </form>
-          </section>
-          <section class="settings-box">
-            <h2>Hizmetler</h2>
+          </details>
+          <details class="settings-box"><summary><h2>Hizmetler</h2><span aria-hidden="true">+</span></summary>
             <p class="muted">
               Süreler başlangıç değerleridir; salondaki gerçek sürelerle
               güncelleyin. Fiyatı boş bırakırsanız müşteriye “bilgi alınız”
               gösterilir. Değişiklikler mevcut randevuları etkilemez.
             </p>
             <div id="services-editor"></div>
-          </section>
-          <section class="settings-box">
-            <h2>Haftalık çalışma saatleri</h2>
+          </details>
+          <details class="settings-box"><summary><h2>Haftalık çalışma saatleri</h2><span aria-hidden="true">+</span></summary>
             <p class="muted">
               Saatler Türkiye saatidir. Değişiklikler önceden alınmış
               randevuları iptal etmez.
             </p>
             <div id="hours-editor"></div>
-          </section>
-          <section class="settings-box">
-            <h2>Kapalı günler</h2>
+          </details>
+          <details class="settings-box"><summary><h2>Kapalı günler</h2><span aria-hidden="true">+</span></summary>
             <p class="muted">
               Tatil veya özel günleri randevuya kapatın. Aktif randevusu olan
               gün kapatılamaz.
@@ -315,7 +321,9 @@
               ><button class="button dark" type="submit">Günü kapat</button>
             </form>
             <div id="closures-list"></div>
-          </section>
+          </details>
+        </div>
+        </div>
         </div>
       </section>
     </main>
